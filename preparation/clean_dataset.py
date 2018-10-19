@@ -7,7 +7,7 @@
 import pandas as pd
 from IPython.display import display
 import re #regex
-
+import numpy as np
 
 # In[2]:
 
@@ -59,7 +59,9 @@ final_dataset['transcript'] = merged['transcript'].apply(remove_tags)
 final_dataset['summary'] = merged['description']
 
 # Remove linhas que não tem transcrição ou que não tem o resumo
-final_dataset.dropna()
+final_dataset['transcript'].replace('', np.nan, inplace=True)
+final_dataset['summary'].replace('', np.nan, inplace=True)
+final_dataset = final_dataset.dropna()
 
 display(final_dataset.head())
 display(final_dataset.describe())

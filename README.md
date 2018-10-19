@@ -11,13 +11,13 @@ Pasta `preparation/`:
 
 ## Sumarização
 
-Pasta `summarization`:
+Pasta `summarization/`:
 
 * `tedtalks.zip`: é apenas uma conveniência para evitar ter que fazer a etapa de preparação dos dados. Contém os dados já prontos pra uso.
     * `tedtalks.csv`: transcrições e resumos de referência.
 
 * `summarization.py`: arquivo usado para gerar os resumos. Usa 2 abordagens diferentes.
-    * Abordagem extrativa: TextRank. [Artigo](https://arxiv.org/pdf/1602.03606.pdf), [Implementação](https://github.com/summanlp/textrank)
+    * Abordagem extrativa: TextRank.  [Artigo](https://arxiv.org/pdf/1602.03606.pdf)  [Implementação](https://github.com/summanlp/textrank)
     
     <!-- * TODO (Pointer-generator) -->
 
