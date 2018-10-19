@@ -1,5 +1,6 @@
 .ipynb_checkpoints/
 *.zip
 *.csv
+*.txt
 
 !tedtalks.zip
