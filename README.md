@@ -25,3 +25,5 @@ Pasta `summarization/`:
 
 ## Avaliação
 
+<!-- Ainda estou organizando as pastas, as instruções estão aqui
+https://github.com/kavgan/ROUGE-2.0/blob/master/docs/usage-documentation.md -->

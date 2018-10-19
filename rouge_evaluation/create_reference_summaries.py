@@ -1,9 +1,9 @@
 import os
 import pandas as pd
 
-ref_summaries_dir = "tedtalk_summarization/reference/"
+ref_summaries_dir = "reference/"
 
-data = pd.read_csv('tedtalks.csv')
+data = pd.read_csv('../summarization/tedtalks.csv')
 total_ted_talks = len(data.index)
 
 for i, row in data.iterrows():
@@ -12,6 +12,6 @@ for i, row in data.iterrows():
         
     ref_summary = row['summary']
 
-    file_path = os.path.join(ref_summaries_dir, f"tedtalk{i}_ref.txt")
+    file_path = os.path.join(ref_summaries_dir, f"tedtalk{i}_Dataset.txt")
     file = open(file_path, "w")
     file.write(ref_summary)
