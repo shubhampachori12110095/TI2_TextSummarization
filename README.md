@@ -35,8 +35,15 @@ Pasta `summarization/`:
 
 Pasta `rouge_evaluation`:
 
-* TODO
-<!-- * Os resumos gerados são salvos em `rouge_evaluation/system`. -->
+* `textRankEvail/`:
+    * `reference/`: resumos de referência, obtidos do dataset.
+    * `system/`: resumos gerados pelo textrank.
+* `pointerGenEvail/`:
+    * `reference/`: resumos de referência, obtidos do dataset.
+    * `system/`: resumos gerados pelo pointer-generator.
+
+* `prepare_to_rouge.py`: script que extrai os resumos de referência do dataset e também converte os resumos gerados para o formato esperado pelo Rouge (uma sentença por linha)
+* `generalize_results.py`: calcula a média dos resultados por algoritmo (o Rouge 2.0 só calcula para cada resumo, individualmente)
 
 ---
 
@@ -74,9 +81,34 @@ python summarization.py
 
 ### Avaliação
 
-<!-- Ainda estou organizando as pastas, as instruções estão aqui
-https://github.com/kavgan/ROUGE-2.0/blob/master/docs/usage-documentation.md -->
+* Instale o [Rouge 2.0](https://github.com/kavgan/ROUGE-2.0/blob/master/docs/usage-documentation.md). Extraia em alguma pasta
 
+* Adicione o jar ao classpath:
+
+```sh
+export CLASSPATH=/<path_to_the_folder_you_extracted>/rouge2-xx.jar
+```
+
+* Execute o jar da pasta `rouge_evaluation/textRankEval/`:
+
+```sh
+cd rouge_evaluation/textRankEvail
+java -jar <path_to_your_rouge2_jar>
+```
+
+* Execute o jar da pasta `rouge_evaluation/pointerGenEval/`:
+
+```sh
+cd rouge_evaluation/pointerGenEval
+java -jar <path_to_your_rouge2_jar>
+```
+
+* Execute o arquivo `rouge_evaluation/generalize_results.py` para calcular a média dos resultados por algoritmo (o Rouge 2.0 só calcula as medidas individuais por resumo). Além disso, esse script corrige um pequeno problema nos CSVs `results.csv`: por algum motivo (locale?) o ponto decimal dos resultados gerados é escrito com ',', o que deixa o CSV com a formatação errada.
+
+```sh
+cd rouge_evaluation
+python generalize_results.py
+```
 
 ## Sources
 

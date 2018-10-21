@@ -25,12 +25,12 @@ def input_data_to_individual_text_files(data, output_dir):
         file = open(file_path, "w")
         file.write(input_text)
 
-DATASET_PATH = '../data/final_dataset.csv'
+PATH_TO_DATASET = '../data/final_dataset.csv'
 TEXT_INPUT_DIR = '../data/text_input/'
 BIN_INPUT_DIR = '../data/bin_input/'
 
 print("Reading from dataset...")
-data = pd.read_csv(DATASET_PATH)
+data = pd.read_csv(PATH_TO_DATASET)
 
 # Ambos os algoritmos precisam que cada sentença
 # esteja em uma linha

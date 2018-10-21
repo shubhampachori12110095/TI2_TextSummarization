@@ -19,15 +19,13 @@ def run_text_rank(text_filenames):
 
         generated_summary = summarizer.summarize(input_text, words=100)
         
-        out_file_path = os.path.join(GEN_SUMMARIES_DIR, f"tedtalk{i}_TextRank.txt")
+        out_file_path = os.path.join(TEXTRANK_OUTPUT_DIR, f"tedtalk{i}_TextRank.txt")
         with open(out_file_path, "w") as output_file:
             output_file.write(generated_summary)
 
 #-------------------------------------------------------------
 
 def run_pointer_generator():
-    # Assume que a pasta data/bin_input/ já foi populada pelo
-    # script preparation/prepare_data_to_algorightms.py
     PATH_TO_BIN_INPUT = '../data/bin_input/finished_files/test.bin'
 
     subprocess.call(
@@ -43,15 +41,25 @@ def run_pointer_generator():
         cwd='./pgn/pointer-generator/'
     )
 
+    # Como não temos controle sobre onde os arquivos gerados pelo pgn
+    # são salvos (ele simplesmente salva como "<numero do exemplo>_decode"
+    # em uma pasta interna) e o ROUGE 2.0 requer que o nome e localização
+    # dos arquivos sigam um padrão, precisamos renomeá-los e movê-los.
+    FILES_GENERATED = 'pgn/pretrained_model/decode_test_400maxenc_4beam_35mindec_100maxdec_ckpt-238410/decoded/*_decoded.txt'
+    for i, filepath in enumerate(glob.glob(FILES_GENERATED)):
+        correct_path = os.path.join(PGN_OUTPUT_DIR, f"tedtalk{i}_PGN.txt")
+        os.replace(filepath, correct_path)
+
 #-------------------------------------------------------------
 
-INPUT_TEXTS_DIR = "../data/text_input"
-GEN_SUMMARIES_DIR = "../rouge_evaluation/system/"
+TEXT_INPUT_DIR = "../data/text_input"
+TEXTRANK_OUTPUT_DIR = "../rouge_evaluation/textRankEval/system"
+PGN_OUTPUT_DIR = "../rouge_evaluation/pointerGenEval/system"
 
-text_input_filenames = glob.glob(f"{INPUT_TEXTS_DIR}/*.txt")
+text_input_filenames = glob.glob(f"{TEXT_INPUT_DIR}/*.txt")
 
 print("Running TextRank...")
 run_text_rank(text_input_filenames)
 
-print("Running Pointer-Generator Network...")
-run_pointer_generator()
+#print("Running Pointer-Generator Network...")
+#run_pointer_generator()

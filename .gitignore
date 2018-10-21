@@ -2,19 +2,22 @@
 .ipynb_checkpoints/
 .vscode/
 
-# Pastas que contém muitos arquivos, que podem ser gerados
-data/text_input/
-data/bin_input/
-rouge_evaluation/reference/
-rouge_evaluation/system/
+# Tipos de arquivo
+*.txt
+*.csv
+*.zip
+
+# Exceções
+!rouge.properties
+!final_dataset.zip
+!*results*
 
 # Pastas ou arquivos muito grandes, devem ser baixados
 # separadamente ou gerados de alguma forma
 pretrained_model/
-*.csv
 
-# Zips de dados, código ou o que for
-*.zip
-
-# Dataset pré-processado não
-!final_dataset.zip
+# Pastas que contém muitos arquivos, que podem ser gerados
+data/text_input/
+data/bin_input/
+rouge_evaluation/*/reference/
+rouge_evaluation/*/system/
