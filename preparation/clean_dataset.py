@@ -6,8 +6,9 @@
 
 import pandas as pd
 from IPython.display import display
-import re #regex
+import re # regex
 import numpy as np
+
 
 # In[2]:
 
@@ -20,6 +21,7 @@ transcripts = pd.read_csv('transcripts.csv')
 # In[3]:
 
 
+# Dá uma olhada nos dados
 print(data.columns)
 display(data.head())
 display(data.describe())
@@ -28,6 +30,7 @@ display(data.describe())
 # In[4]:
 
 
+# Dá uma olhada nos dados
 print(transcripts.columns)
 display(transcripts.head())
 display(transcripts.describe())
@@ -36,10 +39,10 @@ display(transcripts.describe())
 # In[5]:
 
 
-# Junta os dois (tomando cuidado porque não tem o transcript de todas)
+# Junta os dois (tomando cuidado porque não tem o transcript de todos)
 
 # Inner_join, comparando os urls
-merged = pd.merge(data, transcripts, left_on='url', right_on='url')
+merged = pd.merge(data, transcripts, left_on='url', right_on='url', how='inner')
 
 
 # In[6]:
@@ -58,7 +61,7 @@ final_dataset = pd.DataFrame()
 final_dataset['transcript'] = merged['transcript'].apply(remove_tags)
 final_dataset['summary'] = merged['description']
 
-# Remove linhas que não tem transcrição ou que não tem o resumo
+# Remove as linhas que não tem transcrição ou que não tem o resumo
 final_dataset['transcript'].replace('', np.nan, inplace=True)
 final_dataset['summary'].replace('', np.nan, inplace=True)
 final_dataset = final_dataset.dropna()
@@ -71,6 +74,6 @@ display(final_dataset.describe())
 
 
 # Salva
-final_dataset.to_csv('../summarization/tedtalks.csv')
+final_dataset.to_csv('../data/final_dataset.csv')
 print("Done")
 
