@@ -40,8 +40,8 @@ def create_reference_summaries():
     copy_tree(REF_SUMMARIES_DIR, REF_SUMMARIES_DIR2)
 
 def format_generated_summaries():
-    for i, filename in enumerate(glob.glob(TEXTRANK_GEN_SUMMARIES), start=1):
-        with open(filename, "r+") as f:
+    for file_path in glob.glob(TEXTRANK_GEN_SUMMARIES):
+        with open(file_path, "r+") as f:
             gen_summary = f.read()
 
             # Precisa estar em uma sentença por linha
@@ -49,17 +49,17 @@ def format_generated_summaries():
 
             f.write(formatted_gen_summary)
 
-    for i, filename in enumerate(glob.glob(PGN_GEN_SUMMARIES), start=1):
-        with open(filename, "r+") as f:
-            gen_summary = f.read()
+    # for file_path in glob.glob(PGN_GEN_SUMMARIES):
+    #     with open(file_path, "r+") as f:
+    #         gen_summary = f.read()
 
-            # Precisa estar em uma sentença por linha
-            formatted_gen_summary = text_to_one_sentence_per_line(gen_summary)
+    #         # Precisa estar em uma sentença por linha
+    #         formatted_gen_summary = text_to_one_sentence_per_line(gen_summary)
 
-            f.write(formatted_gen_summary)
+    #         f.write(formatted_gen_summary)
 
-REF_SUMMARIES_DIR = "textRankEval/references/"
-REF_SUMMARIES_DIR2 = "pointerGenEval/references/"
+REF_SUMMARIES_DIR = "textRankEval/reference/"
+REF_SUMMARIES_DIR2 = "pointerGenEval/reference/"
 TEXTRANK_GEN_SUMMARIES = "textRankEval/system/*.txt"
 PGN_GEN_SUMMARIES = "pointerGenEval/system/*.txt"
 

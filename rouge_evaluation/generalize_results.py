@@ -53,9 +53,9 @@ def compute_average(in_filename, out_filename, num_summaries):
 
             # Lê os valores
             rouge_name = csv_row[0]
-            recall = float(csv_row[4])
-            precision = float(csv_row[5])
-            fscore = float(csv_row[6])
+            recall = float(csv_row[3])
+            precision = float(csv_row[4])
+            fscore = float(csv_row[5])
 
             # Salva o nome do ROUGE
             if rouge_name not in rouge_names:
@@ -79,23 +79,23 @@ def compute_average(in_filename, out_filename, num_summaries):
 
 TEXT_RANK_COMPUTED_RESULTS = 'textRankEval/results.csv'
 TEXT_RANK_FIXED_CSV = 'textRankEval/fixed_results.csv'
-TEXT_RANK_FINAL_RESULTS = 'textRankEval/final_results.csv'
+TEXT_RANK_FINAL_RESULTS = 'textRankEval/final_results.txt'
 
 PGN_COMPUTED_RESULTS = 'pointerGenEval/results.csv'
 PGN_FIXED_CSV = 'pointerGenEval/fixed_results.csv'
-PGN_FINAL_RESULTS = 'pointerGenEval/final_results.csv'
+PGN_FINAL_RESULTS = 'pointerGenEval/final_results.txt'
 
 
 # Parece que tem um problema de locale, ele salva os valores decimais
 # como "x,xxxxx" (usa vírgula ao invés de ponto), o que zoa o CSV
 fix_csv(TEXT_RANK_COMPUTED_RESULTS, TEXT_RANK_FIXED_CSV)
-fix_csv(PGN_COMPUTED_RESULTS, PGN_FIXED_CSV)
+# fix_csv(PGN_COMPUTED_RESULTS, PGN_FIXED_CSV)
 
 
 # Esse Rouge 2.0 só dá o resultado para cada resumo,
 # não faz a média. Temos que fazer na mão
 num_summaries_on_text_rank = len(glob.glob('textRankEval/system/*.txt'))
-num_summaries_on_pgn = len(glob.glob('pointerGenEval/system/*.txt'))
+# num_summaries_on_pgn = len(glob.glob('pointerGenEval/system/*.txt'))
 
 compute_average(TEXT_RANK_FIXED_CSV, TEXT_RANK_FINAL_RESULTS, num_summaries_on_text_rank)
-compute_average(PGN_FIXED_CSV, PGN_FINAL_RESULTS, num_summaries_on_pgn)
+# compute_average(PGN_FIXED_CSV, PGN_FINAL_RESULTS, num_summaries_on_pgn)

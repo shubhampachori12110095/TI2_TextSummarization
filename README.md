@@ -70,7 +70,7 @@ python prepare_data_to_algorithms.py
 
 * Baixe o modelo pré-treinado do Pointer-Generator Network, disponibilizado pelo autor junto com o código [aqui](https://github.com/abisee/pointer-generator). Ele é utilizado pois treinar o modelo desde o início levaria muito tempo.
 
-* Execute o arquivo `summarization/summarization.py`. Os resumos gerados serão salvos em `rouge_evaluation/system`.
+* Execute o arquivo `summarization/summarization.py`. Os resumos gerados serão salvos em `rouge_evaluation/textRankEval/system/` e `rouge_evaluation/pointerGenEval/system/`.
 
 ```sh
 cd summarization
