@@ -19,9 +19,11 @@ def convert_to_one_sentence_per_line(data):
 
 def input_data_to_individual_text_files(data, output_dir):
     for i, row in data.iterrows():
+        tedtalk_number = i+1
+
         input_text = row['transcript']
 
-        file_path = os.path.join(output_dir, f"tedtalk{i}.txt")
+        file_path = os.path.join(output_dir, f"tedtalk{tedtalk_number}.txt")
         file = open(file_path, "w")
         file.write(input_text)
 
@@ -43,13 +45,3 @@ data = convert_to_one_sentence_per_line(data)
 # também lê direto do arquivo
 print("Saving each input in one text file...")
 input_data_to_individual_text_files(data, TEXT_INPUT_DIR)
-
-# Converte os .txts para a entrada esperada pelo pointer-generator
-# (binário)
-# See: https://github.com/dondon2475848/make_datafiles_for_pgn
-# Os argumentos são em relação ao cwd
-print("Preparing binary data to pointer-generator...")
-subprocess.call(
-    ['python', 'make_datafiles.py', f"../{TEXT_INPUT_DIR}", f"../{BIN_INPUT_DIR}"],
-    cwd='./make_datafiles_for_pgn/'
-)

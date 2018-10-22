@@ -12,8 +12,6 @@ Pasta `data/`:
 
 * `text_input/`: pasta que contém os arquivos usados como entrada para o algoritmo TextRank. Os arquivos em si são gerados pelo script `preparation/prepare_data_to_algorithms.py`. Infelizmente não é possível disponibilizar os arquivos prontos devido ao tamanho.
 
-* `bin_input/`: pasta que contém os arquivos usados como entrada para o algoritmo Pointer-generator. Os arquivos em si são gerados pelo script `preparation/prepare_data_to_algorithms.py`. Infelizmente não é possível disponibilizar os arquivos prontos devido ao tamanho.
-
 Pasta `preparation/`:
 
 * `clean_dataset.ipynb` ou `clean_dataset.py`: script usado para extrair do dataset original os dados que usamos no experimento. Não é necessário executar, o resultado já se encontra em `data/final_dataset.zip`.

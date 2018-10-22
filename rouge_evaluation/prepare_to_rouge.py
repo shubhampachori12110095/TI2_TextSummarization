@@ -18,6 +18,8 @@ def create_reference_summaries():
     total_ted_talks = len(data.index)
 
     for i, row in data.iterrows():
+        tedtalk_number = i+1
+
         if(i % 250 == 0):
             print(f"Processing {i}/{total_ted_talks}")
 
@@ -28,7 +30,7 @@ def create_reference_summaries():
         formatted_ref_summary = text_to_one_sentence_per_line(ref_summary)
 
         # Escreve em um arquivo em uma das pastas
-        file_path = os.path.join(REF_SUMMARIES_DIR, f"tedtalk{i}_Dataset.txt")
+        file_path = os.path.join(REF_SUMMARIES_DIR, f"tedtalk{tedtalk_number}_Dataset.txt")
         with open(file_path, "w") as output:
             output.write(formatted_ref_summary)
 
@@ -38,7 +40,7 @@ def create_reference_summaries():
     copy_tree(REF_SUMMARIES_DIR, REF_SUMMARIES_DIR2)
 
 def format_generated_summaries():
-    for i, filename in enumerate(glob.glob(TEXTRANK_GEN_SUMMARIES)):
+    for i, filename in enumerate(glob.glob(TEXTRANK_GEN_SUMMARIES), start=1):
         with open(filename, "r+") as f:
             gen_summary = f.read()
 
@@ -47,7 +49,7 @@ def format_generated_summaries():
 
             f.write(formatted_gen_summary)
 
-    for i, filename in enumerate(glob.glob(PGN_GEN_SUMMARIES)):
+    for i, filename in enumerate(glob.glob(PGN_GEN_SUMMARIES), start=1):
         with open(filename, "r+") as f:
             gen_summary = f.read()
 
