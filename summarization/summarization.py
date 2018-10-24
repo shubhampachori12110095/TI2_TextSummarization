@@ -4,45 +4,49 @@ from nltk import tokenize
 import subprocess
 import re
 import glob
-import tempfile
 import os
 import shutil
+import tempfile
+
+# Pega o número do nome do arquivo
+# Ex: "tedtalk30_whatever.txt" ==> 30
+# Ex: "tedtalk13_whatever.txt" ==> 13
+def get_tedtalk_num(filepath):
+    filename = os.path.basename(filepath)    
+    return re.search('\d+', filename).group()
 
 #-------------------------------------------------------------
 
-def run_text_rank(text_files_full_path):
-    total_itens = len(text_files_full_path)
+def run_text_rank(text_input_filenames, output_dir):
+    total_tasks = len(text_input_filenames)
 
-    for i, filepath in enumerate(text_files_full_path, start=1):
+    for i, filepath in enumerate(text_input_filenames, start=1):
         if(i % 250 == 0):
-            print(f"Processing {i}/{total_itens}")
-
-        # Pega o número do nome do arquivo
-        filename = os.path.basename(filepath)
-        tedtalk_num = re.search('\d+', filename).group()
+            print(f"Processing {i}/{total_tasks}")
 
         # Lê o arquivo de texto
         with open(filepath, "r") as input_file:
             input_text = input_file.read()
 
+        # Resume
         generated_summary = summarizer.summarize(input_text, words=100)
         
-        out_file_path = os.path.join(TEXTRANK_OUTPUT_DIR, f"tedtalk{tedtalk_num}_TextRank.txt")
+        # Salva o resultado na pasta de saída com o mesmo
+        # número para poder comparar depois
+        tedtalk_num = get_tedtalk_num(filepath)
+        out_file_path = os.path.join(output_dir, f"tedtalk{tedtalk_num}_TextRank.txt")
+
         with open(out_file_path, "w") as output_file:
             output_file.write(generated_summary)
 
 #-------------------------------------------------------------
 
-def run_pointer_generator(text_files_full_path):
-    total_itens = len(text_files_full_path)
+def run_pointer_generator(text_input_filenames, output_dir):
+    total_tasks = len(text_input_filenames)
 
-    for i, filepath in enumerate(text_files_full_path, start=1):
+    for i, filepath in enumerate(text_input_filenames, start=1):
         if(i % 250 == 0):
-            print(f"Processing {i}/{total_itens}")
-
-        # Pega o número do nome do arquivo
-        filename = os.path.basename(filepath)
-        tedtalk_num = re.search('\d+', filename).group()
+            print(f"Processing {i}/{total_tasks}")
 
         # Lê o arquivo de texto
         with open(filepath, "r") as input_file:
@@ -50,8 +54,6 @@ def run_pointer_generator(text_files_full_path):
 
         # Converte para a entrada esperada pelo pointer generator (binário)
         # See: https://github.com/dondon2475848/make_datafiles_for_pgn
-
-        # Cria 2 diretórios temporários
         with tempfile.TemporaryDirectory() as temp_text_dir, \
             tempfile.TemporaryDirectory() as temp_bin_dir:
             
@@ -71,7 +73,7 @@ def run_pointer_generator(text_files_full_path):
                     cwd='./pgn/make_datafiles_for_pgn/'
                 )
 
-            # Passa pra rede
+            # Resume
             subprocess.call(
                 ['python', 'run_summarization.py', '--mode=decode',
                     f"--data_path={temp_bin_dir}/finished_files/test.bin",
@@ -86,14 +88,18 @@ def run_pointer_generator(text_files_full_path):
             )
 
         # Como não temos controle sobre onde os arquivos gerados pelo pgn
-        # são salvos (ele simplesmente salva como "<numero do exemplo>_decode"
+        # são salvos (eles simplesmente são salvos como "<numero qualquer>_decode"
         # em uma pasta interna) e o ROUGE 2.0 requer que o nome e localização
         # dos arquivos sigam um padrão, precisamos renomeá-los e movê-los.
         FOLDER_GENERATED_BY_PGN = './pgn/pretrained_model/decode_test_400maxenc_4beam_35mindec_100maxdec_ckpt-238410'
         
-        for filepath in glob.glob(f"{FOLDER_GENERATED_BY_PGN}/decoded/*_decoded.txt"):
-            correct_path = os.path.join(PGN_OUTPUT_DIR, f"tedtalk{tedtalk_num}_PGN.txt")
-            os.replace(filepath, correct_path)
+        # Salva o resultado na pasta de saída com o mesmo
+        # número para poder comparar depois
+        tedtalk_num = get_tedtalk_num(filepath)
+
+        for generated_filepath in glob.glob(f"{FOLDER_GENERATED_BY_PGN}/decoded/*_decoded.txt"):
+            correct_path = os.path.join(output_dir, f"tedtalk{tedtalk_num}_PGN.txt")
+            os.replace(generated_filepath, correct_path)
 
         # Apaga a pasta que o pgn gerou para a próxima iteração
         # (ela não pode existir)
@@ -107,8 +113,20 @@ PGN_OUTPUT_DIR = "../rouge_evaluation/pointerGenEval/system"
 
 text_input_filenames = glob.glob(f"{TEXT_INPUT_DIR}/*.txt")
 
-#print("Running TextRank...")
-#run_text_rank(text_input_filenames)
+# Recria a pasta de resumos gerados. Assim não
+# precisa apagar manualmente sempre que quiser
+# rodar de novo
+shutil.rmtree(TEXTRANK_OUTPUT_DIR)
+os.mkdir(TEXTRANK_OUTPUT_DIR)
+
+print("Running TextRank...")
+run_text_rank(text_input_filenames, TEXTRANK_OUTPUT_DIR)
+
+# Recria a pasta de resumos gerados. Assim não
+# precisa apagar manualmente sempre que quiser
+# rodar de novo
+shutil.rmtree(PGN_OUTPUT_DIR)
+os.mkdir(PGN_OUTPUT_DIR)
 
 print("Running Pointer-Generator Network...")
-run_pointer_generator(text_input_filenames)
+run_pointer_generator(text_input_filenames, PGN_OUTPUT_DIR)

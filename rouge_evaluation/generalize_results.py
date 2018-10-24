@@ -89,13 +89,13 @@ PGN_FINAL_RESULTS = 'pointerGenEval/final_results.txt'
 # Parece que tem um problema de locale, ele salva os valores decimais
 # como "x,xxxxx" (usa vírgula ao invés de ponto), o que zoa o CSV
 fix_csv(TEXT_RANK_COMPUTED_RESULTS, TEXT_RANK_FIXED_CSV)
-# fix_csv(PGN_COMPUTED_RESULTS, PGN_FIXED_CSV)
+fix_csv(PGN_COMPUTED_RESULTS, PGN_FIXED_CSV)
 
 
 # Esse Rouge 2.0 só dá o resultado para cada resumo,
 # não faz a média. Temos que fazer na mão
 num_summaries_on_text_rank = len(glob.glob('textRankEval/system/*.txt'))
-# num_summaries_on_pgn = len(glob.glob('pointerGenEval/system/*.txt'))
+num_summaries_on_pgn = len(glob.glob('pointerGenEval/system/*.txt'))
 
 compute_average(TEXT_RANK_FIXED_CSV, TEXT_RANK_FINAL_RESULTS, num_summaries_on_text_rank)
-# compute_average(PGN_FIXED_CSV, PGN_FINAL_RESULTS, num_summaries_on_pgn)
+compute_average(PGN_FIXED_CSV, PGN_FINAL_RESULTS, num_summaries_on_pgn)

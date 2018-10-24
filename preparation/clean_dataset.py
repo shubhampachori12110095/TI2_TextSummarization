@@ -8,14 +8,15 @@ import pandas as pd
 from IPython.display import display
 import re # regex
 import numpy as np
+from nltk import tokenize
 
 
 # In[2]:
 
 
-# Carrega o dataset original
-data = pd.read_csv('ted_main.csv')
-transcripts = pd.read_csv('transcripts.csv')
+# Carrega o dataset original da pasta data/
+data = pd.read_csv('../data/ted_main.csv')
+transcripts = pd.read_csv('../data/transcripts.csv')
 
 
 # In[3]:

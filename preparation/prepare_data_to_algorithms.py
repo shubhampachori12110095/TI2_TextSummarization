@@ -19,6 +19,7 @@ def convert_to_one_sentence_per_line(data):
 
 def input_data_to_individual_text_files(data, output_dir):
     for i, row in data.iterrows():
+        # Números nos arquivos vão de 1 a n
         tedtalk_number = i+1
 
         input_text = row['transcript']
@@ -29,7 +30,6 @@ def input_data_to_individual_text_files(data, output_dir):
 
 PATH_TO_DATASET = '../data/final_dataset.csv'
 TEXT_INPUT_DIR = '../data/text_input/'
-BIN_INPUT_DIR = '../data/bin_input/'
 
 print("Reading from dataset...")
 data = pd.read_csv(PATH_TO_DATASET)
@@ -39,9 +39,6 @@ data = pd.read_csv(PATH_TO_DATASET)
 print("Converting to one sentence per line...")
 data = convert_to_one_sentence_per_line(data)
 
-# Salva cada texto de entrada em um arquivo separado.
-#    O script que chamamos abaixo precisa disso. Para
-# o código ficar mais consistente, o outro algoritmo
-# também lê direto do arquivo
+# Salva cada texto de entrada em um arquivo separado
 print("Saving each input in one text file...")
 input_data_to_individual_text_files(data, TEXT_INPUT_DIR)

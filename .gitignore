@@ -2,22 +2,24 @@
 .ipynb_checkpoints/
 .vscode/
 
-# Tipos de arquivo
-*.txt
-*.csv
+# Zips de arquivos que precisou baixar e esqueceu de apagar
 *.zip
+# Exceções:
+# dataset pré-processado
+!data/final_dataset.zip
+# resumos gerados
+!rouge_evaluation/*/generated_summaries.zip
 
-# Exceções
-!rouge.properties
-!final_dataset.zip
-!*results*
+# Arquivos muito grandes, ou pastas com muitos arquivos.
+# Normalmente tem o link para download ou eles podem ser
+# gerados facilmente
+data/*.csv
+data/text_input/*.txt
+rouge_evaluation/*/reference/*.txt
+rouge_evaluation/*/system/*.txt
 
-# Pastas ou arquivos muito grandes, devem ser baixados
-# separadamente ou gerados de alguma forma
-pretrained_model/
-
-# Pastas que contém muitos arquivos, que podem ser gerados
-data/text_input/
-data/bin_input/
-rouge_evaluation/*/reference/
-rouge_evaluation/*/system/
+# Código de outros repositórios, não podemos colocar como se fosse nosso
+summarization/pgn/make_datafiles_for_pgn/*
+summarization/pgn/pointer-generator/*
+summarization/pgn/pretrained_model/*
+!.keep
